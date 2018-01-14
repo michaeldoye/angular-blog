@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { routeAnimation } from '../../../route.animation';
 
 @Component({
-  selector: 'app-login-page',
-  templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.css'],
+  selector: 'app-home-page',
+  templateUrl: './home-page.component.html',
+  styleUrls: ['./home-page.component.css'],
   host: {
     '[@routeAnimation]': 'true'
   },
   animations: [ routeAnimation ]
 })
-export class LoginPageComponent implements OnInit {
+export class HomePageComponent implements OnInit {
 
   constructor() { }
 

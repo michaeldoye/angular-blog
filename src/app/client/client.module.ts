@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { MaterialModule } from '../material.module';
 import { RouterModule } from '@angular/router';
 import { PagesModule } from './pages/pages.module';
+import { AdminModule } from './admin/admin.module';
 
 @NgModule({
   declarations: [],
@@ -10,7 +12,8 @@ import { PagesModule } from './pages/pages.module';
     CommonModule,
     MaterialModule,
     RouterModule,
-    PagesModule
+    PagesModule,
+    AdminModule
   ],
   entryComponents: [],
   providers: []

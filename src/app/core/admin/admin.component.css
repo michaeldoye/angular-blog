@@ -34,3 +34,22 @@ h1.example-app-name {
   flex: 1 0 auto;
 }
 
+.admin-content-container {
+  padding: 30px 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+mat-toolbar.mat-toolbar.sidenav-toolbar {
+  padding: 0 14px 0 24px;
+  z-index: 3;
+}
+
+.sidenav-container, .sidenav-scrollbar-container {
+  height: 100%;
+}
+
+.cdk-focus-trap-content, mat-sidenav {
+  overflow-y: hidden !important;
+  overflow-x: hidden;
+}

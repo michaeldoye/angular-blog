@@ -1,27 +1,42 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+
   <mat-toolbar color="primary" class="example-toolbar">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
     <h1 class="example-app-name">Responsive App</h1>
   </mat-toolbar>
 
-  <mat-sidenav-container class="example-sidenav-container"
-                         [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
-                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-      <!-- <mat-nav-list>
-        <a mat-list-item routerLink="." *ngFor="let nav of fillerNav">{{nav}}</a>
-      </mat-nav-list> -->
+  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
 
+    <mat-sidenav #snav [mode]="'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+      <div class="sidenav-container" fxLayout="column">
+      <div class="sidenav-scrollbar-container" fxLayout="column">
+      <ms-scrollbar>
       <mat-list>
-        <mat-list-item *ngFor="let nav of fillerNav">
-          <mat-icon matListIcon>folder</mat-icon>
-          <a mat-list-item routerLink=".">{{nav}}</a>
-        </mat-list-item>
+        
+          <mat-list-item>
+            <mat-icon matListIcon>home</mat-icon>
+            <a mat-list-item routerLink="/">Home Page</a>
+          </mat-list-item>
+
+          <mat-list-item *ngFor="let nav of fillerNav">
+            <mat-icon matListIcon>folder</mat-icon>
+            <a mat-list-item routerLink=".">{{nav}}</a>
+          </mat-list-item>
+        
       </mat-list>
+    </ms-scrollbar>
+    </div>
+    </div>
     </mat-sidenav>
 
     <mat-sidenav-content>
-      <p *ngFor="let content of fillerContent">{{content}}</p>
+
+      <div class="admin-content-container">
+        <router-outlet></router-outlet>
+      </div>
+      
     </mat-sidenav-content>
+
   </mat-sidenav-container>
+
 </div>

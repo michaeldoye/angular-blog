@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { routeAnimation } from '../../../route.animation';
 
 @Component({
-  selector: 'app-login-page',
-  templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.css'],
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css'],
   host: {
     '[@routeAnimation]': 'true'
   },
   animations: [ routeAnimation ]
 })
-export class LoginPageComponent implements OnInit {
+export class DashboardComponent implements OnInit {
 
   constructor() { }
 
