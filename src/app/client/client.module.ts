@@ -5,6 +5,7 @@ import { MaterialModule } from '../material.module';
 import { RouterModule } from '@angular/router';
 import { PagesModule } from './pages/pages.module';
 import { AdminModule } from './admin/admin.module';
+import { QuillEditorModule } from 'ngx-quill-editor';
 
 @NgModule({
   declarations: [],
@@ -13,7 +14,8 @@ import { AdminModule } from './admin/admin.module';
     MaterialModule,
     RouterModule,
     PagesModule,
-    AdminModule
+    AdminModule,
+    QuillEditorModule
   ],
   entryComponents: [],
   providers: []

@@ -4,6 +4,7 @@ import { MaterialModule } from '../material.module';
 import { RouterModule } from '@angular/router';
 import { AdminComponent } from './admin/admin.component';
 import { ScrollbarModule } from './scrollbar/scrollbar.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [AdminComponent],
@@ -11,7 +12,8 @@ import { ScrollbarModule } from './scrollbar/scrollbar.module';
     CommonModule,
     MaterialModule,
     RouterModule,
-    ScrollbarModule
+    ScrollbarModule,
+    FlexLayoutModule
   ],
   entryComponents: [],
   providers: []

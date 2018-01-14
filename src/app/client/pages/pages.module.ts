@@ -5,13 +5,15 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../../material.module';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [LoginPageComponent, HomePageComponent],
   imports: [
     CommonModule,
     MaterialModule,
-    RouterModule
+    RouterModule,
+    FlexLayoutModule
   ],
   entryComponents: [],
   providers: []

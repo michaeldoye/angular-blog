@@ -5,6 +5,7 @@ import { LoginPageComponent } from './client/pages/login-page/login-page.compone
 import { AdminComponent } from './core/admin/admin.component';
 import { HomePageComponent } from './client/pages/home-page/home-page.component';
 import { DashboardComponent } from './client/admin/dashboard/dashboard.component';
+import { PostsComponent } from './client/admin/posts/posts.component';
 
 const routes: Routes = [
   {
@@ -23,7 +24,12 @@ const routes: Routes = [
         path: '',
         component: DashboardComponent,
         pathMatch: 'full'
-      },  
+      },
+      {
+        path: 'posts',
+        component: PostsComponent,
+        pathMatch: 'full'
+      },
     ]
   }
 ];

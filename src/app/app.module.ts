@@ -5,6 +5,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { QuillEditorModule } from 'ngx-quill-editor';
 
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
@@ -14,6 +16,7 @@ import { CoreModule } from './core/core.module';
 import { environment } from '../environments/environment.firebase';
 import { ScrollbarModule } from './core/scrollbar/scrollbar.module';
 
+
 @NgModule({
   declarations: [
     AppComponent
@@ -22,13 +25,15 @@ import { ScrollbarModule } from './core/scrollbar/scrollbar.module';
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,
+    FlexLayoutModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
     RoutingModule,
     ScrollbarModule,
     CoreModule,
-    ClientModule
+    ClientModule,
+    QuillEditorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

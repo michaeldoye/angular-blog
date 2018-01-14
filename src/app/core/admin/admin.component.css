@@ -9,13 +9,22 @@
 }
 
 mat-sidenav {
-  width: 200px;
+  width: 230px;
+}
+
+.mat-drawer {
+  background-color: #fafafa;
 }
 
 .example-is-mobile .example-toolbar {
   position: fixed;
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */
   z-index: 2;
+  box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
+}
+
+.example-toolbar {
+  box-shadow: rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px, rgba(0, 0, 0, 0.2) 0px 2px 4px -1px
 }
 
 h1.example-app-name {
@@ -35,9 +44,10 @@ h1.example-app-name {
 }
 
 .admin-content-container {
-  padding: 30px 30px;
   max-width: 1200px;
   margin: 0 auto;
+  background: #ffffff;
+  margin-top: 50px;
 }
 
 mat-toolbar.mat-toolbar.sidenav-toolbar {
