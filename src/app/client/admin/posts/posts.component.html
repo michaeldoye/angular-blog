@@ -14,7 +14,7 @@
   
 <div class="example-container">
 
-  <mat-table [dataSource]="dataSource" matSort>
+  <mat-table [dataSource]="dataSource" matSort matSortActive="dateAdded" matSortDirection="desc">
 
     <!-- ID Column -->
     <ng-container matColumnDef="id">
@@ -22,28 +22,30 @@
       <mat-cell *matCellDef="let row; let index = index"> {{ index }} </mat-cell>
     </ng-container>
 
-    <!-- Progress Column -->
+    <!-- title Column -->
     <ng-container matColumnDef="title">
       <mat-header-cell *matHeaderCellDef mat-sort-header> title </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.title }} </mat-cell>
     </ng-container>
 
-    <!-- Name Column -->
+    <!-- author Column -->
     <ng-container matColumnDef="author">
       <mat-header-cell *matHeaderCellDef mat-sort-header> author </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.author }} </mat-cell>
     </ng-container>
 
-    <!-- Color Column -->
+    <!-- date Column -->
     <ng-container matColumnDef="dateAdded">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> dateAdded </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.dateAdded}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> date </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.dateAdded | timeAgo }} </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    <mat-row (click)="openDialog(row)" *matRowDef="let row; columns: displayedColumns;">
     </mat-row>
   </mat-table>
 
   <mat-paginator [pageSizeOptions]="[12, 25, 100]"></mat-paginator>
 </div>
+
+<ms-loading-overlay [isLoading]="isLoading"></ms-loading-overlay>

@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { PagesModule } from './pages/pages.module';
 import { AdminModule } from './admin/admin.module';
 import { QuillEditorModule } from 'ngx-quill-editor';
+import { LoadingOverlayComponent } from '../core/loading-overlay/loading-overlay.component';
 
 @NgModule({
   declarations: [],

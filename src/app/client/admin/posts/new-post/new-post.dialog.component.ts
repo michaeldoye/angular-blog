@@ -1,11 +1,15 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'new-post-dialog',
   templateUrl: 'new-post-dialog.html',
 })
-export class NewPostDialog {
+export class NewPostDialog implements OnInit {
+
+  options: FormGroup;
+  postDate: Date = new Date();
 
   public editor;
   public editorContent = `<h3>I am Example content</h3>`;
@@ -13,29 +17,42 @@ export class NewPostDialog {
     placeholder: "insert content..."
   };
 
+  btnOpts: any = {
+    active: false,
+    text: 'Save Post',
+    spinnerSize: 18,
+    raised: true,
+    buttonColor: 'accent',
+    spinnerColor: 'primary'
+  }
+
   constructor(
     public dialogRef: MatDialogRef<NewPostDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    fb: FormBuilder
+  ) {
+      this.options = fb.group({
+        'title': '',
+        'content': ['<h3>I am Example content</h3>', Validators.min(10)],
+        'author': 'some author',
+        'dateAdded': this.postDate,
+        'categories': '',
+        'tags': ''
+      });
+  }
+
+  ngOnInit(): void {
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  onEditorBlured(quill) {
-    console.log('editor blur!', quill);
-  }
-
-  onEditorFocused(quill) {
-    console.log('editor focus!', quill);
-  }
-
-  onEditorCreated(quill) {
-    this.editor = quill;
-    console.log('quill is ready! this is current quill instance object', quill);
-  }
-
-  onContentChanged({ quill, html, text }) {
-    console.log('quill content is changed!', quill, html, text);
+  addNewPost(data) {
+    this.btnOpts.text = 'Saving...';
+    this.btnOpts.active = true;
+    this.options.reset();
+    this.dialogRef.close(data);
   }
 
 }

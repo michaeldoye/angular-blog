@@ -14,19 +14,21 @@
             <mat-nav-list>
               
               <mat-list-item routerLink="/" fxLayout="row" fxLayoutAlign="space-between center">
-                <mat-icon matListIcon>home</mat-icon>
-                <span>Home Page</span>
+                <mat-icon color="primary" matListIcon>home</mat-icon>
+                Home Page
               </mat-list-item>
 
               <mat-list-item routerLink=".">
-                <mat-icon matListIcon>dashboard</mat-icon>
+                <mat-icon color="primary" matListIcon>dashboard</mat-icon>
                 Dashboard
               </mat-list-item>
 
               <mat-list-item routerLink="posts">
-                <mat-icon matListIcon>list</mat-icon>
+                <mat-icon color="primary"  matListIcon>list</mat-icon>
                 Posts Page
               </mat-list-item>
+
+              <mat-divider></mat-divider>
 
               <mat-list-item *ngFor="let nav of fillerNav" routerLink=".">
                 <mat-icon matListIcon>folder</mat-icon>
