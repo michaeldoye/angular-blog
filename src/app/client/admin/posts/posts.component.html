@@ -1,9 +1,12 @@
 <mat-toolbar>
   <span>Posts</span>
   <span fxFlex></span>
-  <button mat-icon-button matTooltip="Add New Post" (click)="openDialog()">
+  <button mat-icon-button matTooltip="Quick Add" (click)="openDialog()">
     <mat-icon aria-label="icon">playlist_add</mat-icon>
   </button>
+  <button mat-icon-button matTooltip="Add New Post" routerLink="/admin/posts/new">
+      <mat-icon aria-label="icon">note_add</mat-icon>
+    </button>
 </mat-toolbar>
 
 <div class="example-header">
@@ -24,21 +27,27 @@
 
     <!-- title Column -->
     <ng-container matColumnDef="title">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> title </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Title </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.title }} </mat-cell>
     </ng-container>
 
     <!-- author Column -->
     <ng-container matColumnDef="author">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> author </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Author </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.author }} </mat-cell>
     </ng-container>
 
     <!-- date Column -->
     <ng-container matColumnDef="dateAdded">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> date </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.dateAdded | timeAgo }} </mat-cell>
     </ng-container>
+
+    <!-- status Column -->
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.status }} </mat-cell>
+    </ng-container>    
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row (click)="openDialog(row)" *matRowDef="let row; columns: displayedColumns;">

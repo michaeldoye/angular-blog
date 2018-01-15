@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
-import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 
 import { routeAnimation } from '../../../route.animation';
 import { Observable } from 'rxjs/Observable';
 import { NewPostDialog } from './new-post/new-post.dialog.component';
+import { LocalStorageService } from 'angular-2-local-storage/dist/local-storage.service';
 
 
 @Component({
@@ -18,27 +19,38 @@ import { NewPostDialog } from './new-post/new-post.dialog.component';
 })
 
 export class PostsComponent {
-  displayedColumns = ['id', 'title', 'author', 'dateAdded'];
+  displayedColumns = ['id', 'title', 'author', 'dateAdded', 'status'];
   dataSource: MatTableDataSource<Post>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  private itemDoc: AngularFirestoreDocument<any>;
-  item: Observable<any>;
   allPosts: Post[] = [];
+  user: any = this.ls.get('user');
+
   allData: any;
   isLoading: boolean = true;
 
-  constructor(private afs: AngularFirestore, public dialog: MatDialog) {
+  postsRef: AngularFireObject<Post>;
+  posts: Observable<Post[]>;
 
-    this.itemDoc = afs.doc<any>('users/wzHVrPlC7HsARVh6IWBQ');
-    this.itemDoc.valueChanges().subscribe(data => {
-      this.dataSource = new MatTableDataSource(data.posts);
-      this.allPosts = data.posts;
-      this.allData = data;
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+  constructor(
+    public dialog: MatDialog, 
+    private db: AngularFireDatabase,
+    private ls: LocalStorageService
+  ) {
+    this.postsRef = db.object(`users/${this.user.uid}`);
+    this.postsRef.valueChanges().subscribe((data:any) => {
+      if (data) {
+        this.dataSource = new MatTableDataSource(data.posts);
+        this.allPosts = data.posts;
+        this.allData = data;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
+      this.isLoading = false;
+    },
+    (error) => {
       this.isLoading = false;
     });
   }
@@ -53,8 +65,8 @@ export class PostsComponent {
       if(!result) return;
       this.isLoading = true;
       this.allPosts.push(result);
-      let post = {posts: this.allPosts};
-      this.itemDoc.update(post).then(() => this.isLoading = false);
+      let post: any = {posts: this.allPosts};
+      this.postsRef.update(post).then(() => this.isLoading = false);
     });
   }
 

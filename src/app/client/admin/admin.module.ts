@@ -13,6 +13,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { NewPostDialog } from './posts/new-post/new-post.dialog.component';
 import { LoadingOverlayComponent } from '../../core/loading-overlay/loading-overlay.component';
 import { TimeAgoPipe } from '../utils/time-ago.pipe';
+import { AddPostComponent } from './posts/add-post/add-post.component';
+import { EditPostComponent } from './posts/edit-post/edit-post.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { TimeAgoPipe } from '../utils/time-ago.pipe';
     PostsComponent,
     LoadingOverlayComponent,
     NewPostDialog,
-    TimeAgoPipe
+    TimeAgoPipe,
+    AddPostComponent,
+    EditPostComponent
   ],
   imports: [
     CommonModule,

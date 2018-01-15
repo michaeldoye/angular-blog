@@ -6,6 +6,8 @@ import { AdminComponent } from './core/admin/admin.component';
 import { HomePageComponent } from './client/pages/home-page/home-page.component';
 import { DashboardComponent } from './client/admin/dashboard/dashboard.component';
 import { PostsComponent } from './client/admin/posts/posts.component';
+import { AdminAuthGuard } from './client/utils/admin-auth.gaurd';
+import { AddPostComponent } from './client/admin/posts/add-post/add-post.component';
 
 const routes: Routes = [
   {
@@ -19,6 +21,7 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+    canActivate: [AdminAuthGuard],
     children: [
       {
         path: '',
@@ -30,6 +33,11 @@ const routes: Routes = [
         component: PostsComponent,
         pathMatch: 'full'
       },
+      {
+        path: 'posts/new',
+        component: AddPostComponent,
+        pathMatch: 'full'
+      },      
     ]
   }
 ];

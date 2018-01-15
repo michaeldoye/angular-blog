@@ -1,10 +1,10 @@
-<form class="example-container" [formGroup]="options">
+<form class="example-container" [formGroup]="postForm">
 
   <mat-dialog-content>
 
-    <mat-form-field [color]="options.value.color">
-      <input matInput type="text" placeholder="Post Title" formControlName="title" min="10">
-      <mat-error *ngIf="options.get('fontSize')?.invalid">Min size: 10px</mat-error>
+    <mat-form-field>
+      <input matInput type="text" placeholder="Post Title" formControlName="title">
+      <mat-error *ngIf="title.invalid">min 5 characters</mat-error>
     </mat-form-field>
 
     <div class="form-row" fxLayout="row" fxLayoutAlign="stretch" fxLayoutGap="25px">
@@ -12,13 +12,23 @@
         <mat-select placeholder="Category" formControlName="categories" multiple>
           <mat-option *ngFor="let category of data.categories" [value]="category">{{ category }}</mat-option>
         </mat-select>
+        <mat-error *ngIf="categories.invalid">This field is required</mat-error>
       </mat-form-field>
 
       <mat-form-field>
         <mat-select placeholder="Tag" formControlName="tags" multiple>
           <mat-option *ngFor="let tag of data.tags" [value]="tag">{{ tag }}</mat-option>
         </mat-select>
+        <mat-error *ngIf="tags.invalid">This field is required</mat-error>
       </mat-form-field>
+
+      <mat-form-field>
+        <mat-select [value]="status.value" placeholder="Status" formControlName="status">
+          <mat-option value="published">Published</mat-option>
+          <mat-option value="draft">Draft</mat-option>
+        </mat-select>
+        <mat-error *ngIf="status.invalid">This field is required</mat-error>
+      </mat-form-field>      
     </div>
   
     <quill-editor  formControlName="content" [options]="editorOptions"></quill-editor>
@@ -29,7 +39,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions fxLayout="column" fxLayoutAlign="space-between end">
-    <spinner-button [options]="btnOpts" (click)="addNewPost(options.value)"></spinner-button>
+    <button mat-raised-button [disabled]="postForm.invalid" (click)="addNewPost(postForm.value)" color="primary">Add Post</button>
   </mat-dialog-actions>
 
 </form>

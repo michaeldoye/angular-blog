@@ -7,6 +7,7 @@ import { PagesModule } from './pages/pages.module';
 import { AdminModule } from './admin/admin.module';
 import { QuillEditorModule } from 'ngx-quill-editor';
 import { LoadingOverlayComponent } from '../core/loading-overlay/loading-overlay.component';
+import { AdminAuthGuard } from './utils/admin-auth.gaurd';
 
 @NgModule({
   declarations: [],
@@ -19,6 +20,6 @@ import { LoadingOverlayComponent } from '../core/loading-overlay/loading-overlay
     QuillEditorModule
   ],
   entryComponents: [],
-  providers: []
+  providers: [AdminAuthGuard]
 })
 export class ClientModule { }
