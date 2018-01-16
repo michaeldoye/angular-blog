@@ -1,12 +1,12 @@
 <mat-toolbar>
   <span>Posts</span>
   <span fxFlex></span>
-  <button mat-icon-button matTooltip="Quick Add" (click)="openDialog()">
-    <mat-icon aria-label="icon">playlist_add</mat-icon>
-  </button>
+  <button *ngIf="selectedPosts.length > 0" mat-icon-button matTooltip="Delete All" (click)="doDeleteSelected()">
+    <mat-icon aria-label="icon">delete_forever</mat-icon>
+  </button> 
   <button mat-icon-button matTooltip="Add New Post" routerLink="/admin/posts/new">
-      <mat-icon aria-label="icon">note_add</mat-icon>
-    </button>
+    <mat-icon aria-label="icon">note_add</mat-icon>
+  </button> 
 </mat-toolbar>
 
 <div class="example-header">
@@ -19,10 +19,19 @@
 
   <mat-table [dataSource]="dataSource" matSort matSortActive="dateAdded" matSortDirection="desc">
 
+    <ng-container matColumnDef="checkbox">
+      <mat-header-cell fxFlex="60px" *matHeaderCellDef> 
+        <mat-checkbox [(ngModel)]="checkAll" [checked]="isAllChecked()" (ngModelChange)="doCheckAll(checkAll)"></mat-checkbox>  
+      </mat-header-cell>
+      <mat-cell fxFlex="60px" *matCellDef="let row;"> 
+        <mat-checkbox [(ngModel)]="row.isChecked" [value]="row.id" (ngModelChange)="doSinglePostSelection(row.id, row.isChecked)"></mat-checkbox>      
+      </mat-cell>
+    </ng-container>
+
     <!-- ID Column -->
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-      <mat-cell *matCellDef="let row; let index = index"> {{ index }} </mat-cell>
+      <mat-cell *matCellDef="let row;"> {{ row.id }}  </mat-cell>
     </ng-container>
 
     <!-- title Column -->
@@ -49,8 +58,18 @@
       <mat-cell *matCellDef="let row"> {{ row.status }} </mat-cell>
     </ng-container>    
 
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Actions </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button mat-icon-button matTooltip="View Post" (click)="editPost(row.id)">
+          <mat-icon aria-label="delete">arrow_forward</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container> 
+
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row (click)="openDialog(row)" *matRowDef="let row; columns: displayedColumns;">
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
     </mat-row>
   </mat-table>
 

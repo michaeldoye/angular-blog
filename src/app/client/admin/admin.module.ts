@@ -1,43 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { QuillEditorModule } from 'ngx-quill-editor';
-import { MatProgressButtons } from 'mat-progress-buttons';
 
 import { MaterialModule } from '../../material.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { PostsComponent } from './posts/posts.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { NewPostDialog } from './posts/new-post/new-post.dialog.component';
-import { LoadingOverlayComponent } from '../../core/loading-overlay/loading-overlay.component';
-import { TimeAgoPipe } from '../utils/time-ago.pipe';
-import { AddPostComponent } from './posts/add-post/add-post.component';
-import { EditPostComponent } from './posts/edit-post/edit-post.component';
+import { PostsModule } from './posts/posts.module';
+
 
 @NgModule({
   declarations: [
-    DashboardComponent, 
-    PostsComponent,
-    LoadingOverlayComponent,
-    NewPostDialog,
-    TimeAgoPipe,
-    AddPostComponent,
-    EditPostComponent
+    DashboardComponent
   ],
   imports: [
+    PostsModule,
     CommonModule,
     MaterialModule,
-    RouterModule,
-    FlexLayoutModule,
-    FormsModule,
-    ReactiveFormsModule,
-    QuillEditorModule,
-    MatProgressButtons,
-    
   ],
-  entryComponents: [NewPostDialog],
+  entryComponents: [],
   providers: []
 })
 export class AdminModule { }

@@ -8,6 +8,7 @@ import { DashboardComponent } from './client/admin/dashboard/dashboard.component
 import { PostsComponent } from './client/admin/posts/posts.component';
 import { AdminAuthGuard } from './client/utils/admin-auth.gaurd';
 import { AddPostComponent } from './client/admin/posts/add-post/add-post.component';
+import { EditPostComponent } from './client/admin/posts/edit-post/edit-post.component';
 
 const routes: Routes = [
   {
@@ -31,7 +32,10 @@ const routes: Routes = [
       {
         path: 'posts',
         component: PostsComponent,
-        pathMatch: 'full'
+      },
+      {
+        path: 'posts/edit/:id',
+        component: EditPostComponent,
       },
       {
         path: 'posts/new',

@@ -40,7 +40,7 @@ export class NewPostDialog {
 
   addNewPost(data) {
     this.postForm.reset();
-    //this.dialogRef.close(data);
+    this.dialogRef.close(data);
   }
 
   get title() { return this.postForm.get('title') };

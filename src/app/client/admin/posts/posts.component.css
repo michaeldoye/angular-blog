@@ -20,6 +20,13 @@
 }
 
 .mat-table {
-  overflow: auto;
-  max-height: 800px;
+
+}
+
+mat-cell {
+  overflow: visible;
+}
+
+mat-header-cell {
+  overflow: visible;
 }
