@@ -10,7 +10,7 @@ import { LocalStorageService } from 'angular-2-local-storage';
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.css'],
+  styleUrls: ['./login-page.component.scss'],
   host: {
     '[@routeAnimation]': 'true'
   },

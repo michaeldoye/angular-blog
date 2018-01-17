@@ -1,7 +1,7 @@
 <mat-toolbar>
   <span>Posts</span>
   <span fxFlex></span>
-  <button *ngIf="selectedPosts.length > 0" mat-icon-button matTooltip="Delete All" (click)="doDeleteSelected()">
+  <button *ngIf="selectedPosts.length > 0" mat-icon-button matTooltip="Delete Selected" (click)="doDeleteSelected()">
     <mat-icon aria-label="icon">delete_forever</mat-icon>
   </button> 
   <button mat-icon-button matTooltip="Add New Post" routerLink="/admin/posts/new">
@@ -75,5 +75,9 @@
 
   <mat-paginator [pageSizeOptions]="[12, 25, 100]"></mat-paginator>
 </div>
+
+<button class="add-post-fab" mat-fab color="primary" routerLink="/admin/posts/new">
+  <mat-icon aria-label="add post button">note_add</mat-icon>
+</button>
 
 <ms-loading-overlay [isLoading]="isLoading"></ms-loading-overlay>

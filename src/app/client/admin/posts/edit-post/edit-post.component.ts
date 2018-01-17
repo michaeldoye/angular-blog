@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-edit-post',
   templateUrl: './edit-post.component.html',
-  styleUrls: ['./edit-post.component.css']
+  styleUrls: ['./edit-post.component.scss']
 })
 
 export class EditPostComponent implements OnInit {
@@ -64,22 +64,38 @@ export class EditPostComponent implements OnInit {
     * @return void
   */
   ngOnInit() {
+    // Get the post id from router
     let postId = this.ar.snapshot.paramMap.get('id');
-    this.postRef = this.db.object(`users/${this.user.uid}/posts/${postId}`);
-    this.postRef.valueChanges().subscribe((post: Post) => {
-      if(post) {
-        this.post = post;
-        this.postForm.setValue({
-          'id': post.id,
-          'title': post.title,
-          'content': post.content,
-          'author': post.author,
-          'dateAdded': post.dateAdded,
-          'categories': post.categories,
-          'tags': post.tags,
-          'status': post.status,
-        });
+
+    // FireBase posts reference
+    this.postRef = this.db.object(`users/${this.user.uid}`);
+
+    // Get posts from firebase
+    this.postRef.valueChanges().subscribe((posts: any) => {
+      if (posts.posts) {
+
+        // Get only the current post
+        const post: Post = posts.posts.filter((post: Post) => {
+          return post.id == postId;
+        })[0];
+
+        // Set the values of the form from the post data
+        if(post) {
+          this.post = post;
+          this.postForm.setValue({
+            'id': post.id,
+            'title': post.title,
+            'content': post.content,
+            'author': post.author,
+            'dateAdded': post.dateAdded,
+            'categories': post.categories,
+            'tags': post.tags,
+            'status': post.status,
+          });
+        }        
       }
+
+      // Remove the progress bar
       this.isLoading = false;
     });
   }
@@ -99,9 +115,9 @@ export class EditPostComponent implements OnInit {
       }
       this.isLoading = false;
     },
-    (error) => {
+    (e: Error) => {
       this.isLoading = false;
-      this.sb.open('There was a problem loading the categories/tags', '', {duration: 5000});
+      this.sb.open(e.message, '', {duration: 5000});
     });    
   }
 
@@ -112,11 +128,23 @@ export class EditPostComponent implements OnInit {
     * @return void
   */
   savePost(post: Post): void {
-    this.postRef.update(post).then(() => {
+    // Remove the selected post from the post array
+    this.allPosts = this.allPosts.filter((post: Post) => {
+      return post.id !== this.post.id;
+    })
+
+    // Add edited post to posts array
+    this.allPosts.push(post);
+
+    // Save the post structure for Firebase
+    let posts: any = {posts: this.allPosts};    
+
+    // Update the posts node with the updated posts array
+    this.postRef.update(posts).then(() => {
       this.sb.open('Your post has been saved!', '', {duration: 5000});
     })
     .catch((e: Error) => {
-      this.sb.open('There was a problem, please try again', '', {duration: 5000});
+      this.sb.open(e.message, '', {duration: 5000});
     });
   }
 
@@ -124,6 +152,7 @@ export class EditPostComponent implements OnInit {
   /**
     * @desc Delete a selected post
     * @return void
+    * @todo save deleted posts for undo     
   */
   deletePost() {
     // Remove the selected post from the post array
@@ -140,9 +169,10 @@ export class EditPostComponent implements OnInit {
       this.openSnackBox('Post Deleted', 'undo')      
     })
     .catch((e: Error) => {
-      this.sb.open('There was a problem, please try again', '', {duration: 5000});
+      this.sb.open(e.message, '', {duration: 5000});
     });
   }
+
 
   /**
     * @desc Check all post checkboxes

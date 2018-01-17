@@ -10,7 +10,7 @@ import { Post } from '../posts.component';
 @Component({
   selector: 'app-add-post',
   templateUrl: './add-post.component.html',
-  styleUrls: ['./add-post.component.css'],
+  styleUrls: ['./add-post.component.scss'],
   host: {
     '[@routeAnimation]': 'true'
   },
@@ -68,7 +68,8 @@ export class AddPostComponent implements OnInit {
         this.postCats = data.categories;
         this.postTags = data.tags;
         this.postsCount = data.posts ? data.posts.length : 0;
-        this.postForm.patchValue({id: this.postsCount}, {onlySelf: true});
+        const maxId = Math.max(...data.posts.map(o => o.id));
+        this.postForm.patchValue({id: maxId+1}, {onlySelf: true});
       }
       this.isLoading = false;
     },

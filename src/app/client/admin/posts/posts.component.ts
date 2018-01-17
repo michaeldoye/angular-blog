@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatSnackBar } from '@angular/material';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 
 import { routeAnimation } from '../../../route.animation';
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-posts',
   templateUrl: './posts.component.html',
-  styleUrls: ['./posts.component.css'],
+  styleUrls: ['./posts.component.scss'],
   host: {
     '[@routeAnimation]': 'true'
   },
@@ -36,6 +36,7 @@ export class PostsComponent {
   constructor(
     private db: AngularFireDatabase,
     private ls: LocalStorageService,
+    private sb: MatSnackBar,
     private rt: Router
   ) {
     this.postsRef = db.object(`users/${this.user.uid}`);
@@ -118,7 +119,41 @@ export class PostsComponent {
     }
   }
 
-  doDeleteSelected(): void {}  
+
+  /**
+    * @desc Delete a selected posts
+    * @return void
+    * @todo save deleted posts for undo 
+  */
+  doDeleteSelected(): void {
+    // Remove selected posts from posts array
+    this.selectedPosts.forEach((v, i) => {
+       this.allPosts = this.allPosts.filter((post: Post) => post.id !== v);
+    })
+
+    // Save the post structure for Firebase
+    let posts: any = {posts: this.allPosts};
+
+    // Update the posts node with the updated posts array
+    this.postsRef.update(posts).then(() => {
+      this.openSnackBox('Posts Deleted', 'undo')      
+    })
+    .catch((e: Error) => {
+      this.sb.open(e.message, '', {duration: 5000});
+    });    
+  }
+
+  
+  /**
+    * @desc Check all post checkboxes
+    * @param string message - snackbox message
+    * @param string action - click action for the snackbox    
+    * @return void
+  */  
+  openSnackBox(message: string, action?: string): void {
+    const sbRef = this.sb.open(message, action, {duration: 30000});
+    sbRef.onAction().subscribe(() => console.log('do undo'));
+  }  
 }
 
 export interface Post {

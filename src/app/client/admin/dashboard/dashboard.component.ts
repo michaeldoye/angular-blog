@@ -4,7 +4,7 @@ import { routeAnimation } from '../../../route.animation';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
+  styleUrls: ['./dashboard.component.scss'],
   host: {
     '[@routeAnimation]': 'true'
   },

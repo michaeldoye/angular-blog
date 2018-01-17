@@ -16,7 +16,7 @@ export const scrollbarOptions = {
 @Component({
   selector: 'ms-scrollbar',
   templateUrl: './scrollbar.component.html',
-  styleUrls: ['./scrollbar.component.css'],
+  styleUrls: ['./scrollbar.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class ScrollbarComponent implements OnInit {
