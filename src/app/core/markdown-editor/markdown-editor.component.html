@@ -1,5 +1,5 @@
 <div class="md-editor-container" [class.fullscreen]="isFullScreen">
-  <mat-toolbar *ngIf="!hideToolbar && mode != 'preview'" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+  <mat-toolbar [color]="toolBarColor" *ngIf="!hideToolbar && mode != 'preview'" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
 
     <div class="btn-group">
       <button mat-icon-button type="button" type="button" matTooltip="Bold" (click)="insertContent('Bold')" *ngIf="!_hideIcons.Bold">
@@ -50,18 +50,44 @@
       </button>
     </div>
 
-    <mat-slider color="primary" max="1000" step="100" [(ngModel)]="sliderHeight" (change)="adjustHeight()"></mat-slider>
+    <div class="btn-group pull-right hide-split" *ngIf="!isFullScreen">
+      <mat-slider color="primary" max="1000" step="100" [(ngModel)]="sliderHeight" (change)="adjustHeight()"></mat-slider>
+    </div>
 
+    <span fxFlex></span>
+
+    <div class="btn-group" *ngIf="isFullScreen">
+      <button mat-icon-button type="button" matTooltipPosition="left" matTooltip="Save Post" (click)="savePost()">
+        <mat-icon aria-label="save">save</mat-icon>
+      </button>
+    </div>
   </mat-toolbar>
 
-  <div class="editor-container">
-    <div [style.display]="mode == 'preview' ? 'none' : null">
+  <div class="editor-container" fxLayout="row" fxLayoutAlign="end stretch">
+
+    <div mwlResizable 
+      [style.display]="mode == 'preview' ? 'none' : null" 
+      [enableGhostResize]="true" 
+      [resizeEdges]="{bottom: true, right: true, top: true, left: true}"
+      resizeCursors="col-resize">
+      
       <div class="editor-panel" [style.height]="sHeight">
         <div class="ace-editor" #aceEditor></div>
       </div>
+
     </div>
-    <div [style.display]="showPreviewPanel ? 'block' : 'none'" (click)="previewPanelClick($event)">
-      <div class="preview-panel" [innerHtml]="_previewHtml" [style.height]="sHeight"></div>
+
+    <div mwlResizable 
+      [enableGhostResize]="true" 
+      [resizeEdges]="{bottom: false, right: false, top: false, left: true}" 
+      [style.display]="showPreviewPanel ? 'block' : 'none'"
+      [resizeSnapGrid]="{left: 50, right: 50}"
+      resizeCursors="col-resize"
+      (click)="previewPanelClick($event)"
+      (resizing)="onResizePanel($event)">
+
+      <div class="preview-panel" [innerHtml]="_previewHtml" [style.width]="sWidth" [style.height]="sHeight"></div>
+
     </div>
   </div>
   <div *ngIf="maxlength > 0 && mode != 'preview'">

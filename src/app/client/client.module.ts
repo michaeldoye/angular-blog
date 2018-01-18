@@ -7,6 +7,7 @@ import { PagesModule } from './pages/pages.module';
 import { AdminModule } from './admin/admin.module';
 import { LoadingOverlayComponent } from '../core/loading-overlay/loading-overlay.component';
 import { AdminAuthGuard } from './utils/admin-auth.gaurd';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [],
@@ -15,7 +16,8 @@ import { AdminAuthGuard } from './utils/admin-auth.gaurd';
     MaterialModule,
     RouterModule,
     PagesModule,
-    AdminModule
+    AdminModule,
+    SharedModule
   ],
   entryComponents: [],
   providers: [AdminAuthGuard]

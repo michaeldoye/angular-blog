@@ -24,7 +24,7 @@
           <mat-error *ngIf="title.invalid">min 5 characters</mat-error>
         </mat-form-field>
       
-        <md-editor name="Content" formControlName="content" [height]="'400px'" [mode]="'editor'" required maxlength="1500"></md-editor>
+        <md-editor name="Content" formControlName="content" required maxlength="12500" (onSave)="savePost(postForm.value)"></md-editor>
         <mat-error *ngIf="content.invalid">max 1500</mat-error> 
     
         <input type="hidden" formControlName="author" [value]="">

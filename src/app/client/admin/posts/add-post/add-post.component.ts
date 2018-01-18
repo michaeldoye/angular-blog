@@ -89,6 +89,14 @@ export class AddPostComponent implements OnInit {
        
   }
 
+  fullScreenSave(post: Post): void {
+    if (!this.postForm.invalid) {
+      this.addNewPost(post);
+    } else {
+      this.sb.open('You need to fill out all fields, please exit fullscreen mode', '', {duration: 5000});
+    }
+  }
+
   get title() { return this.postForm.get('title') };
   get categories() { return this.postForm.get('categories') };
   get tags() { return this.postForm.get('tags') };

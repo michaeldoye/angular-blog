@@ -1,5 +1,7 @@
-import { Component, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewEncapsulation, ViewChild, AfterViewInit } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
+import { MatSidenav } from '@angular/material';
+import { SidenavService } from '../../shared/services/sidenav.service';
 
 @Component({
   selector: 'app-admin',
@@ -7,7 +9,10 @@ import { MediaMatcher } from '@angular/cdk/layout';
   styleUrls: ['./admin.component.scss'],
   //encapsulation: ViewEncapsulation.None  
 })
-export class AdminComponent {
+
+export class AdminComponent implements AfterViewInit {
+
+  @ViewChild('snav') public snav: MatSidenav;
 
   isDarkTheme: boolean = false;
 
@@ -17,10 +22,19 @@ export class AdminComponent {
 
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+  constructor(
+    changeDetectorRef: ChangeDetectorRef, 
+    media: MediaMatcher, 
+    private sidenavService: SidenavService) {
+
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+
+  }
+
+  ngAfterViewInit(): void {
+    this.sidenavService.setSidenav(this.snav);
   }
 
   changeTheme(): void {

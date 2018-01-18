@@ -13,14 +13,14 @@
 
     <form class="example-container" [formGroup]="postForm" fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="35px">
 
-      <mat-card fxFlex="80" fxLayout="column" fxLayoutAlign="space-evenly stretch">
+      <mat-card fxFlex="75" fxLayout="column" fxLayoutAlign="space-evenly stretch">
 
         <mat-form-field>
           <input matInput type="text" placeholder="Post Title" formControlName="title">
           <mat-error *ngIf="title.invalid">min 5 characters</mat-error>
         </mat-form-field>
 
-        <md-editor name="Content" formControlName="content" [height]="'400px'" [mode]="'editor'" required maxlength="1500"></md-editor>
+        <md-editor name="Content" formControlName="content" required maxlength="12500" (onSave)="fullScreenSave(postForm.value)"></md-editor>
         <mat-error *ngIf="content.invalid">max 1500</mat-error>      
     
         <input type="hidden" formControlName="author" [value]="'an author'">
@@ -29,7 +29,7 @@
       
       </mat-card>
 
-      <mat-card fxFlex="20" fxLayout="column" fxLayoutAlign="space-evenly stretch">
+      <mat-card fxFlex="25" fxLayout="column" fxLayoutAlign="space-evenly stretch">
 
         <button mat-raised-button [disabled]="postForm.invalid" (click)="addNewPost(postForm.value)" type="submit" color="primary">Add Post</button>
       

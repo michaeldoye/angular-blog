@@ -7,6 +7,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '../material.module';
 import { AdminComponent } from './admin/admin.component';
 import { ScrollbarModule } from './scrollbar/scrollbar.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [AdminComponent],
@@ -15,7 +16,8 @@ import { ScrollbarModule } from './scrollbar/scrollbar.module';
     MaterialModule,
     RouterModule,
     ScrollbarModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    SharedModule
   ],
   entryComponents: [],
   providers: []

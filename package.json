@@ -32,6 +32,7 @@
     "@angular/upgrade": "~5.0.0",
     "angular-2-local-storage": "^1.0.1",
     "angular-in-memory-web-api": "~0.5.0",
+    "angular-resizable-element": "^2.0.0",
     "angularfire2": "^5.0.0-rc.4",
     "core-js": "^2.4.1",
     "firebase": "^4.8.2",

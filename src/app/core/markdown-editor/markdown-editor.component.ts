@@ -1,6 +1,7 @@
-import { Component, ViewChild, forwardRef, Renderer, Attribute, Input, ElementRef } from '@angular/core';
+import { Component, ViewChild, forwardRef, Renderer, Attribute, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import { SidenavService } from '../../shared/services/sidenav.service';
 
 declare let ace: any;
 declare let marked: any;
@@ -25,6 +26,8 @@ declare let hljs: any;
 })
 
 export class MarkdownEditorComponent implements ControlValueAccessor, Validator {
+
+  @Output('onSave') onSave = new EventEmitter();
 
   @ViewChild('aceEditor')
   aceEditorContainer: ElementRef;
@@ -92,7 +95,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
 
   editor: any;
 
-  showPreviewPanel: boolean = true;
+  showPreviewPanel: boolean = false;
   isFullScreen: boolean = false;
 
   _markedOpt: any;
@@ -101,15 +104,19 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   _onChange = (_: any) => { };
   _onTouched = () => { };
 
-  sliderHeight: number = 300;
+  sliderHeight: number = 500;
+  sliderWidth: number = 500;
   sHeight = `${this.sliderHeight}px`;
+  sWidth = `${this.sliderWidth}px`;
   showHeight: boolean = false;
+  toolBarColor: string;
 
   constructor(
     @Attribute('required') public required: boolean = false,
     @Attribute('maxlength') public maxlength: number = -1,
     private _renderer: Renderer,
-    private _domSanitizer: DomSanitizer) {
+    private _domSanitizer: DomSanitizer,
+    private _sideNav: SidenavService) {
 
   }
 
@@ -160,6 +167,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
 
   adjustHeight() {
     this.sHeight = `${this.sliderHeight}px`;
+    this.editorResize();
   }
 
   writeValue(value: any | Array<any>): void {
@@ -255,7 +263,15 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   }
 
   fullScreen() {
+    if(this._sideNav.isOpen) {
+      this._sideNav.close();
+    } else if (!this._sideNav.isOpen && this.isFullScreen) {
+      this._sideNav.open();
+      this.sWidth = '500px';
+    }
     this.isFullScreen = !this.isFullScreen;
+    if(this.isFullScreen) this.sWidth = 'auto';
+    this.toolBarColor = this.isFullScreen ? 'primary' : '';
     this._renderer.setElementStyle(document.body, 'overflowY', this.isFullScreen ? 'hidden' : 'auto');
     this.editorResize();
   }
@@ -267,5 +283,16 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
         this.editor.focus();
       }, timeOut);
     }
+  }
+
+  savePost() {
+    this.onSave.emit(true);
+  }
+
+  onResizePanel(e) {
+    console.log(e);
+    this.sliderWidth = e.rectangle.width;
+    this.sWidth = `${this.sliderWidth}px`;
+    this.editor.resize();
   }
 }

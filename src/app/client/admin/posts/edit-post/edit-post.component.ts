@@ -122,6 +122,7 @@ export class EditPostComponent implements OnInit {
     * @return void
   */
   savePost(post: Post): void {
+    if (!post) return;
     // Remove the selected post from the post array
     this.allPosts = this.allPosts.filter((post: Post) => {
       return post.id !== this.post.id;
@@ -177,6 +178,10 @@ export class EditPostComponent implements OnInit {
   openSnackBox(message: string, action?: string): void {
     const sbRef = this.sb.open(message, action, {duration: 30000});
     sbRef.onAction().subscribe(() => console.log('do undo'));
+  }
+
+  test(e) {
+    console.log('test', e);
   }
 
   // Form field reference: title

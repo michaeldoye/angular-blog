@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ResizableModule } from 'angular-resizable-element';
 
 import { PostsComponent } from './posts.component';
 import { LoadingOverlayComponent } from '../../../core/loading-overlay/loading-overlay.component';
@@ -28,7 +29,8 @@ import { MarkdownEditorComponent } from '../../../core/markdown-editor/markdown-
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    ResizableModule
   ],
   entryComponents: [],
   providers: []
