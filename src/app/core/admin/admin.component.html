@@ -1,8 +1,10 @@
-<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+<div class="example-container" [class.light-blue-theme]="!isDarktheme" [class.example-is-mobile]="mobileQuery.matches" [class.dark-theme]="isDarkTheme">
 
   <mat-toolbar color="primary" class="example-toolbar">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
     <h1 class="example-app-name">Responsive App</h1>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="changeTheme()"><mat-icon>format_color_fill</mat-icon></button>
   </mat-toolbar>
 
   <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">

@@ -1,12 +1,15 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+  styleUrls: ['./admin.component.scss'],
+  //encapsulation: ViewEncapsulation.None  
 })
 export class AdminComponent {
+
+  isDarkTheme: boolean = false;
 
   mobileQuery: MediaQueryList;
 
@@ -19,6 +22,14 @@ export class AdminComponent {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
+
+  changeTheme(): void {
+    if (this.isDarkTheme) {
+        this.isDarkTheme = false;
+    } else {
+        this.isDarkTheme = true;
+    }
+  }  
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);

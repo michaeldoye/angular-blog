@@ -1,9 +1,19 @@
-<mat-toolbar>
+<mat-toolbar color="primary">
   <span>Posts</span>
   <span fxFlex></span>
-  <button *ngIf="selectedPosts.length > 0" mat-icon-button matTooltip="Delete Selected" (click)="doDeleteSelected()">
-    <mat-icon aria-label="icon">delete_forever</mat-icon>
-  </button> 
+
+  <div class="selected-tools-wrapper" fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="10px">
+    <mat-form-field class="toolbar-field" *ngIf="selectedPosts.length > 0">
+      <mat-select placeholder="Categories" multiple [(ngModel)]="selectedCat">
+        <mat-option *ngFor="let category of postCats" [value]="category">{{ category }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <button *ngIf="selectedPosts.length > 0" mat-icon-button matTooltip="Delete Selected" (click)="doDeleteSelected()">
+      <mat-icon aria-label="icon">delete_forever</mat-icon>
+    </button>
+  </div>
+
   <button mat-icon-button matTooltip="Add New Post" routerLink="/admin/posts/new">
     <mat-icon aria-label="icon">note_add</mat-icon>
   </button> 
@@ -30,8 +40,8 @@
 
     <!-- ID Column -->
     <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-      <mat-cell *matCellDef="let row;"> {{ row.id }}  </mat-cell>
+      <mat-header-cell fxFlex="60px" *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+      <mat-cell fxFlex="60px" *matCellDef="let row;"> {{ row.id }}  </mat-cell>
     </ng-container>
 
     <!-- title Column -->
@@ -57,7 +67,6 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.status }} </mat-cell>
     </ng-container>    
-
 
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Actions </mat-header-cell>

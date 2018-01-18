@@ -33,6 +33,8 @@ export class PostsComponent {
   checkAll: any;
   selectedPosts: Array<number> = [];
 
+  postCats: any;
+
   constructor(
     private db: AngularFireDatabase,
     private ls: LocalStorageService,
@@ -44,6 +46,7 @@ export class PostsComponent {
       if (data) {
         this.dataSource = new MatTableDataSource(data.posts);
         this.allPosts = data.posts;
+        this.postCats = data.categories;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       }
