@@ -5,7 +5,6 @@ import { MaterialModule } from '../material.module';
 import { RouterModule } from '@angular/router';
 import { PagesModule } from './pages/pages.module';
 import { AdminModule } from './admin/admin.module';
-import { QuillEditorModule } from 'ngx-quill-editor';
 import { LoadingOverlayComponent } from '../core/loading-overlay/loading-overlay.component';
 import { AdminAuthGuard } from './utils/admin-auth.gaurd';
 
@@ -16,8 +15,7 @@ import { AdminAuthGuard } from './utils/admin-auth.gaurd';
     MaterialModule,
     RouterModule,
     PagesModule,
-    AdminModule,
-    QuillEditorModule
+    AdminModule
   ],
   entryComponents: [],
   providers: [AdminAuthGuard]

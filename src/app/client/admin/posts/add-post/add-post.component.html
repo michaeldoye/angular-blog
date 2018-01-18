@@ -11,16 +11,17 @@
 
   <div class="content-section">
 
-    <form class="example-container" (ngSubmit)="addNewPost(postForm.value)" [formGroup]="postForm" fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="35px">
+    <form class="example-container" [formGroup]="postForm" fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="35px">
 
-      <mat-card fxFlex="70" fxLayout="column" fxLayoutAlign="space-evenly stretch">
+      <mat-card fxFlex="80" fxLayout="column" fxLayoutAlign="space-evenly stretch">
 
         <mat-form-field>
           <input matInput type="text" placeholder="Post Title" formControlName="title">
           <mat-error *ngIf="title.invalid">min 5 characters</mat-error>
         </mat-form-field>
-      
-        <quill-editor  formControlName="content" [options]="editorOptions"></quill-editor>
+
+        <md-editor name="Content" formControlName="content" [height]="'400px'" [mode]="'editor'" required maxlength="1500"></md-editor>
+        <mat-error *ngIf="content.invalid">max 1500</mat-error>      
     
         <input type="hidden" formControlName="author" [value]="'an author'">
         <input type="hidden" formControlName="dateAdded" [value]="postDate">
@@ -28,9 +29,9 @@
       
       </mat-card>
 
-      <mat-card fxFlex="30" fxLayout="column" fxLayoutAlign="space-evenly stretch">
+      <mat-card fxFlex="20" fxLayout="column" fxLayoutAlign="space-evenly stretch">
 
-        <button mat-raised-button [disabled]="postForm.invalid" type="submit" color="primary">Add Post</button>
+        <button mat-raised-button [disabled]="postForm.invalid" (click)="addNewPost(postForm.value)" type="submit" color="primary">Add Post</button>
       
         <mat-form-field class="aside-field">
           <mat-select placeholder="Categories" formControlName="categories" multiple>

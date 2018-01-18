@@ -65,6 +65,7 @@ export class LoginPageComponent implements OnInit {
 
   logOut() {
     this.afAuth.auth.signOut().then(() => console.log('logged out'));
+    this.ls.clearAll();
   }  
 
 }

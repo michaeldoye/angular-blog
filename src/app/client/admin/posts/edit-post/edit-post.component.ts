@@ -15,13 +15,7 @@ import { MatSnackBar } from '@angular/material';
 export class EditPostComponent implements OnInit {
 
   isLoading: boolean = true;
-  user: any = this.ls.get('user');
-
-  editor;
-  editorContent = `<h3>I am Example content</h3>`;
-  editorOptions = {
-    placeholder: "insert content..."
-  };  
+  user: any = this.ls.get('user'); 
   
   postForm: FormGroup
   post: Post;
@@ -192,6 +186,8 @@ export class EditPostComponent implements OnInit {
   // Form field reference: tags
   get tags() { return this.postForm.get('tags') };
   // Form field reference: status
-  get status() { return this.postForm.get('status') }; 
+  get status() { return this.postForm.get('status') };
+  // Form field reference: content
+  get content() { return this.postForm.get('content') }; 
 
 }

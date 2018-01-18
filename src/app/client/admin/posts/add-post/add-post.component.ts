@@ -23,13 +23,7 @@ export class AddPostComponent implements OnInit {
   postDate: Date = new Date();
 
   user: any = this.ls.get('user');
-  isLoading: boolean = false;
-
-  editor;
-  editorContent = `<h3>I am Example content</h3>`;
-  editorOptions = {
-    placeholder: "insert content..."
-  };  
+  isLoading: boolean = false; 
 
   postsRef: AngularFireObject<any>;
   postCats: any;
@@ -98,6 +92,7 @@ export class AddPostComponent implements OnInit {
   get title() { return this.postForm.get('title') };
   get categories() { return this.postForm.get('categories') };
   get tags() { return this.postForm.get('tags') };
-  get status() { return this.postForm.get('status') };  
+  get status() { return this.postForm.get('status') };
+  get content() { return this.postForm.get('content') }; 
 
 }

@@ -6,7 +6,6 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { QuillEditorModule } from 'ngx-quill-editor';
 
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
@@ -32,8 +31,7 @@ import { ScrollbarModule } from './core/scrollbar/scrollbar.module';
     RoutingModule,
     ScrollbarModule,
     CoreModule,
-    ClientModule,
-    QuillEditorModule
+    ClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

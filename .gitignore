@@ -5,3 +5,5 @@ typings
 build
 src/environments/environment.firebase.ts
 *.zip
+firebase.json
+.firebaserc

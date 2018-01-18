@@ -34,6 +34,7 @@ export class PostsComponent {
   selectedPosts: Array<number> = [];
 
   postCats: any;
+  selectedCat: any;
 
   constructor(
     private db: AngularFireDatabase,
@@ -73,9 +74,9 @@ export class PostsComponent {
   /**
     * @desc Navigates to selected post when clicked
     * @param int postId - the id of the post to navigate to
-    * @return void
+    * @return void ng build --env=prod --output-hashing none
   */
-  editPost(postId: any): void {
+  editPost(postId: any): void { 
     this.rt.navigate(['/admin/posts/edit', postId]);
   }
 
@@ -100,7 +101,7 @@ export class PostsComponent {
 
   /**
     * @desc Check if all checkboxes are checked
-    * @return void
+    * @return array of checked posts
   */
   isAllChecked() {
     return this.allPosts.every((post: Post) => post.isChecked);

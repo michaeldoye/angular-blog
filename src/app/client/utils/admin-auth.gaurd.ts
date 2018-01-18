@@ -18,7 +18,7 @@ export class AdminAuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean { 
-      if(this.activeUser && this.activeUser.userId === 'FbD7xNni6Xe1eF0k8AIUMVOLkFH2') {
+      if(this.activeUser && this.activeUser.uid === 'FbD7xNni6Xe1eF0k8AIUMVOLkFH2') {
         return true;
       } 
       else {
