@@ -6,6 +6,8 @@ import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { Post } from '../posts.component';
+import { MatDialog } from '@angular/material';
+import { AddCategoryComponent } from '../add-category/add-category.component';
 
 @Component({
   selector: 'app-add-post',
@@ -36,6 +38,7 @@ export class AddPostComponent implements OnInit {
     private db: AngularFireDatabase,
     private ls: LocalStorageService,
     private sb: MatSnackBar,
+    private dialog: MatDialog,
     private router: Router) {
     
     this.getPosts();
@@ -94,8 +97,15 @@ export class AddPostComponent implements OnInit {
     if (!this.postForm.invalid) {
       this.addNewPost(post);
     } else {
-      this.sb.open('You need to fill out all fields, please exit fullscreen mode', '', {duration: 5000});
+      this.sb.open('You need to fill out all fields', '', {duration: 5000});
     }
+  }
+
+  openDialog(): void {
+    let dialogRef = this.dialog.open(AddCategoryComponent, {
+      width: '550px',
+      data: {user: this.user.uid}
+    });
   }
 
   get title() { return this.postForm.get('title') };

@@ -1,10 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource, MatSnackBar } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatSnackBar, MatDialog } from '@angular/material';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 
 import { routeAnimation } from '../../../route.animation';
 import { LocalStorageService } from 'angular-2-local-storage/dist/local-storage.service';
 import { Router } from '@angular/router';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 
 @Component({
@@ -19,7 +20,7 @@ import { Router } from '@angular/router';
 
 export class PostsComponent {
   displayedColumns = ['checkbox', 'id', 'title', 'author', 'dateAdded', 'status', 'action'];
-  dataSource: MatTableDataSource<Post>;
+  tblData: MatTableDataSource<Post>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -40,16 +41,17 @@ export class PostsComponent {
     private db: AngularFireDatabase,
     private ls: LocalStorageService,
     private sb: MatSnackBar,
-    private rt: Router
-  ) {
+    public  dl: MatDialog,
+    private rt: Router) {
+      
     this.postsRef = db.object(`users/${this.user.uid}`);
     this.postsRef.valueChanges().subscribe((data:any) => {
       if (data) {
-        this.dataSource = new MatTableDataSource(data.posts);
-        this.allPosts = data.posts;
-        this.postCats = data.categories;
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+        this.tblData  = new MatTableDataSource(data.posts);
+        this.allPosts = data.posts ? data.posts : [];
+        this.postCats = data.categories ? data.categories : [];
+        this.tblData.paginator = this.paginator;
+        this.tblData.sort = this.sort;
       }
       this.isLoading = false;
     },
@@ -67,14 +69,14 @@ export class PostsComponent {
   applyFilter(filterValue: string): void {
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
-    this.dataSource.filter = filterValue;
+    this.tblData.filter = filterValue;
   }
 
 
   /**
     * @desc Navigates to selected post when clicked
     * @param int postId - the id of the post to navigate to
-    * @return void ng build --env=prod --output-hashing none
+    * @return void
   */
   editPost(postId: any): void { 
     this.rt.navigate(['/admin/posts/edit', postId]);
@@ -101,9 +103,9 @@ export class PostsComponent {
 
   /**
     * @desc Check if all checkboxes are checked
-    * @return array of checked posts
+    * @return boolean
   */
-  isAllChecked() {
+  isAllChecked(): boolean {
     return this.allPosts.every((post: Post) => post.isChecked);
   }
 
@@ -125,31 +127,43 @@ export class PostsComponent {
 
 
   /**
-    * @desc Delete a selected posts
+    * @desc Delete a selected posts on user confirmation
     * @return void
     * @todo save deleted posts for undo 
   */
   doDeleteSelected(): void {
-    // Remove selected posts from posts array
-    this.selectedPosts.forEach((v, i) => {
-       this.allPosts = this.allPosts.filter((post: Post) => post.id !== v);
+    // Set up the confirm dialog
+    const confDialog = this.dl.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: {item: `${this.selectedPosts.length} posts`}
     })
 
-    // Save the post structure for Firebase
-    let posts: any = {posts: this.allPosts};
+    // Once the user has confirmed
+    confDialog.afterClosed().subscribe((result: boolean) => {
+      if (result) {
 
-    // Update the posts node with the updated posts array
-    this.postsRef.update(posts).then(() => {
-      this.openSnackBox('Posts Deleted', 'undo')      
-    })
-    .catch((e: Error) => {
-      this.sb.open(e.message, '', {duration: 5000});
-    });    
+        // Remove selected posts from posts array
+        this.selectedPosts.forEach((v, i) => {
+          this.allPosts = this.allPosts.filter((post: Post) => post.id !== v);
+        })
+
+        // Save the post structure for Firebase
+        let posts: any = {posts: this.allPosts};
+
+        // Update the posts node with the updated posts array
+        this.postsRef.update(posts).then(() => {
+          this.openSnackBox('Posts Deleted', 'undo')      
+        })
+        .catch((e: Error) => {
+          this.sb.open(e.message, '', {duration: 5000});
+        });   
+      }
+    }) 
   }
 
   
   /**
-    * @desc Check all post checkboxes
+    * @desc Open the snack box to notify the user
     * @param string message - snackbox message
     * @param string action - click action for the snackbox    
     * @return void
@@ -167,7 +181,8 @@ export interface Post {
   dateAdded: Date;
   author: string;
   categories?: Array<string>;
-  tags?: Array<string>,
   status: string;
+  tags?: Array<string>;
   isChecked?: boolean;
+  slug?: string;
 }

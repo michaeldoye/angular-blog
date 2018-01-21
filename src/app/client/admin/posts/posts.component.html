@@ -10,7 +10,7 @@
     </mat-form-field>
   
     <button *ngIf="selectedPosts.length > 0" mat-icon-button matTooltip="Delete Selected" (click)="doDeleteSelected()">
-      <mat-icon aria-label="icon">delete_forever</mat-icon>
+      <mat-icon aria-label="icon">delete_sweep</mat-icon>
     </button>
   </div>
 
@@ -27,7 +27,7 @@
   
 <div class="example-container">
 
-  <mat-table [dataSource]="dataSource" matSort matSortActive="dateAdded" matSortDirection="desc">
+  <mat-table [dataSource]="tblData" matSort matSortActive="dateAdded" matSortDirection="desc">
 
     <ng-container matColumnDef="checkbox">
       <mat-header-cell fxFlex="60px" *matHeaderCellDef> 

@@ -44,6 +44,10 @@
           <mat-error *ngIf="categories.invalid">This field is required</mat-error>
         </mat-form-field>
 
+        <button type="button" mat-icon-button matTooltip="Add Cateogry" (click)="openDialog()">
+          <mat-icon aria-label="add category">add_circle</mat-icon>
+        </button> 
+
         <p><mat-divider></mat-divider></p>
   
         <mat-form-field class="aside-field">

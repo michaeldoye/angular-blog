@@ -13,6 +13,7 @@ import { AddPostComponent } from './add-post/add-post.component';
 import { EditPostComponent } from './edit-post/edit-post.component';
 import { MaterialModule } from '../../../material.module';
 import { MarkdownEditorComponent } from '../../../core/markdown-editor/markdown-editor.component';
+import { AddCategoryComponent } from './add-category/add-category.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { MarkdownEditorComponent } from '../../../core/markdown-editor/markdown-
     TimeAgoPipe,
     AddPostComponent,
     EditPostComponent,
-    MarkdownEditorComponent
+    MarkdownEditorComponent,
+    AddCategoryComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,7 @@ import { MarkdownEditorComponent } from '../../../core/markdown-editor/markdown-
     FlexLayoutModule,
     ResizableModule
   ],
-  entryComponents: [],
+  entryComponents: [AddCategoryComponent],
   providers: []
 })
 export class PostsModule { }
