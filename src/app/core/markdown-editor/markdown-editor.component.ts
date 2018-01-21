@@ -291,7 +291,6 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   }
 
   onResizePanel(e) {
-    console.log(e);
     this.sliderWidth = e.rectangle.width;
     this.sWidth = `${this.sliderWidth}px`;
     this.editor.resize();

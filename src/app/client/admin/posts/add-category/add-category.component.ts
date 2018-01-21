@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatDialog } from '@angular/material';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
@@ -9,7 +9,7 @@ import { ConfirmDialogComponent } from '../../../../shared/components/confirm-di
   styleUrls: ['./add-category.component.scss']
 })
 
-export class AddCategoryComponent {
+export class AddCategoryComponent implements OnDestroy {
 
   private _categoryRef: AngularFireObject<any>;
   public categories: Array<any> = [];
@@ -22,10 +22,10 @@ export class AddCategoryComponent {
     public dialogRef: MatDialogRef<AddCategoryComponent>,
     private db: AngularFireDatabase) {
 
-    this._categoryRef = this.db.object(`users/${this.uid.user}`);
+    this._categoryRef = this.db.object(`users/${this.uid.user}/categories`);
     this._categoryRef.valueChanges().subscribe(data => {
-      if (data.categories) {
-        this.categories = data.categories;
+      if (data) {
+        this.categories = data;
       }
     })
   }
@@ -33,7 +33,7 @@ export class AddCategoryComponent {
   addNewCategory(): void {
     if (this.newCategory !== '') {
       this.categories.push(this.newCategory);
-      this._categoryRef.update({categories: this.categories})
+      this._categoryRef.set(this.categories)
         .then(() => this.openSnackBar('Added'))
         .catch((e: Error) => this.openSnackBar(e.message));
     };
@@ -44,10 +44,10 @@ export class AddCategoryComponent {
       width:'350px',
       data: {item: selectedCategory}
     });
-    confDialog.afterClosed().subscribe(result => {
+    confDialog.afterClosed().subscribe((result: boolean) => {
       if (result) {
         this.categories = this.categories.filter(cat => cat !== selectedCategory);
-        this._categoryRef.update({categories: this.categories})
+        this._categoryRef.set(this.categories)
           .then(() => this.openSnackBar('Deleted', 'Undo'))
           .catch((e: Error) => this.openSnackBar(e.message));
       }
@@ -58,5 +58,12 @@ export class AddCategoryComponent {
     let snackBarRef = this.snackBar.open(message, action, {duration: 3000});
     snackBarRef.onAction().subscribe(() => console.log('do action'));
     this.newCategory = '';
+  }
+
+  ngOnDestroy() {
+    this._categoryRef = null;
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    
   }
 }

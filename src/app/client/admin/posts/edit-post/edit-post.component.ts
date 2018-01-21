@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { Post } from '../posts.component';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
+import { AddCategoryComponent } from '../add-category/add-category.component';
+import { Subscription } from 'rxjs/Subscription';
+import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-edit-post',
@@ -12,7 +15,7 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./edit-post.component.scss']
 })
 
-export class EditPostComponent implements OnInit {
+export class EditPostComponent implements OnDestroy {
 
   isLoading: boolean = true;
   user: any = this.ls.get('user'); 
@@ -25,15 +28,18 @@ export class EditPostComponent implements OnInit {
   postCats: any;
   postTags: any;
   allPosts: Array<Post> = [];
+  subs: Array<Subscription> = [];
 
   constructor(
     private ar: ActivatedRoute,
     private db: AngularFireDatabase,
     private ls: LocalStorageService,
     private fb: FormBuilder,
+    private dialog: MatDialog,
     private sb: MatSnackBar,
     private rt: Router) { 
 
+    this.postsRef = this.db.object(`users/${this.user.uid}`);
     // Fill the category, tags and posts arrays
     this.getCatsAndTags(); 
 
@@ -52,67 +58,60 @@ export class EditPostComponent implements OnInit {
 
 
   /**
-    * @desc Get the post id from router and
-    *       fetch the post from FireBase then
-    *       set the form values on init
-    * @return void
-  */
-  ngOnInit() {
-    // Get the post id from router
-    let postId = this.ar.snapshot.paramMap.get('id');
-
-    // FireBase posts reference
-    this.postRef = this.db.object(`users/${this.user.uid}`);
-
-    // Get posts from firebase
-    this.postRef.valueChanges().subscribe((posts: any) => {
-      if (posts.posts) {
-
-        // Get only the current post
-        const post: Post = posts.posts.filter((post: Post) => {
-          return post.id == postId;
-        })[0];
-
-        // Set the values of the form from the post data
-        if(post) {
-          this.post = post;
-          this.postForm.setValue({
-            'id': post.id,
-            'title': post.title,
-            'content': post.content,
-            'author': post.author,
-            'dateAdded': post.dateAdded,
-            'categories': post.categories,
-            'tags': post.tags,
-            'status': post.status,
-          });
-        }        
-      }
-
-      // Remove the progress bar
-      this.isLoading = false;
-    });
-  }
-
-
-  /**
     * @desc Get all categories, tags and posts from firebase
     * @return void
   */
   getCatsAndTags(): void {
-    this.postsRef = this.db.object(`users/${this.user.uid}`);
-    this.postsRef.valueChanges().subscribe((data:any) => {
+    this.subs.push(this.postsRef.valueChanges().subscribe((data:any) => {
       if (data) {
         this.postCats = data.categories;
         this.postTags = data.tags;
         this.allPosts = data.posts;
+        this.setFormValues(data.posts);
       }
       this.isLoading = false;
     },
     (e: Error) => {
       this.isLoading = false;
       this.sb.open(e.message, '', {duration: 5000});
-    });    
+    }));
+  }
+
+
+  /**
+    * @desc Get the post id from router and fetch the post from FireBase then
+    *       set the form values on init
+    * @param Posts array - the posts to be filtered and updated
+    * @return void
+  */
+  setFormValues(posts: Array<Post>): void {
+    // Get the post id from router
+    let postId = this.ar.snapshot.paramMap.get('id');
+
+    // Get only the current post
+    const post: Post = posts.filter((post: Post) => post.id == postId)[0];
+
+    // Set the values of the form from the post data
+    if(post && !this.postForm.valid) {
+      this.post = post;
+      this.postForm.setValue({
+        'id': post.id,
+        'title': post.title,
+        'content': post.content,
+        'author': post.author,
+        'dateAdded': post.dateAdded,
+        'categories': post.categories,
+        'tags': post.tags,
+        'status': post.status,
+      });
+    } else {
+      if (post) {
+        this.postForm.patchValue({'categories': post.categories});
+      }
+    }     
+
+    // Remove the progress bar
+    this.isLoading = false;
   }
 
 
@@ -135,7 +134,7 @@ export class EditPostComponent implements OnInit {
     let posts: any = {posts: this.allPosts};    
 
     // Update the posts node with the updated posts array
-    this.postRef.update(posts).then(() => {
+    this.postsRef.update(posts).then(() => {
       this.sb.open('Your post has been saved!', '', {duration: 5000});
     })
     .catch((e: Error) => {
@@ -150,22 +149,33 @@ export class EditPostComponent implements OnInit {
     * @todo save deleted posts for undo     
   */
   deletePost() {
-    // Remove the selected post from the post array
-    this.allPosts = this.allPosts.filter((post: Post) => {
-      return post.id !== this.post.id;
+    // Set up the confirm dialog
+    const confDialog = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: {item: this.post.title}
     })
 
-    // Save the post structure for Firebase
-    let posts: any = {posts: this.allPosts};
+    // Once the user has confirmed
+    confDialog.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        // Remove the selected post from the post array
+        this.allPosts = this.allPosts.filter((post: Post) => {
+          return post.id !== this.post.id;
+        })
 
-    // Update the posts node with the updated posts array
-    this.postsRef.update(posts).then(() => {
-      this.rt.navigate(['admin/posts']);
-      this.openSnackBox('Post Deleted', 'undo')      
+        // Save the post structure for Firebase
+        let posts: any = {posts: this.allPosts};
+
+        // Update the posts node with the updated posts array
+        this.postsRef.update(posts).then(() => {
+          this.rt.navigate(['admin/posts']);
+          this.openSnackBox('Post Deleted', 'undo')      
+        })
+        .catch((e: Error) => {
+          this.sb.open(e.message, '', {duration: 5000});
+        });
+      }
     })
-    .catch((e: Error) => {
-      this.sb.open(e.message, '', {duration: 5000});
-    });
   }
 
 
@@ -177,11 +187,19 @@ export class EditPostComponent implements OnInit {
   */  
   openSnackBox(message: string, action?: string): void {
     const sbRef = this.sb.open(message, action, {duration: 30000});
-    sbRef.onAction().subscribe(() => console.log('do undo'));
+    this.subs.push(sbRef.onAction().subscribe(() => console.log('do undo')));
   }
 
-  test(e) {
-    console.log('test', e);
+  openDialog(): void {
+    let postContent = this.content.value;
+    let dialogRef = this.dialog.open(AddCategoryComponent, {
+      width: '550px',
+      data: {user: this.user.uid}
+    });
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach((sub: Subscription) => sub.unsubscribe());
   }
 
   // Form field reference: title

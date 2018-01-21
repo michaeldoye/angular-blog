@@ -152,7 +152,8 @@ export class PostsComponent {
 
         // Update the posts node with the updated posts array
         this.postsRef.update(posts).then(() => {
-          this.openSnackBox('Posts Deleted', 'undo')      
+          this.openSnackBox('Posts Deleted', 'undo');
+          this.selectedPosts = [];     
         })
         .catch((e: Error) => {
           this.sb.open(e.message, '', {duration: 5000});
