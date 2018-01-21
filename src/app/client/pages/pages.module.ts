@@ -9,9 +9,13 @@ import { MaterialModule } from '../../material.module';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { SinglePostComponent } from './single-post/single-post.component';
 
 @NgModule({
-  declarations: [LoginPageComponent, HomePageComponent],
+  declarations: [
+    LoginPageComponent, 
+    HomePageComponent, SinglePostComponent
+  ],
   imports: [
     CommonModule,
     MaterialModule,
@@ -21,7 +25,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     ReactiveFormsModule,
     LocalStorageModule.withConfig({
       storageType: 'localStorage'
-    }),    
+    })    
   ],
   entryComponents: [],
   providers: [AngularFireDatabase]

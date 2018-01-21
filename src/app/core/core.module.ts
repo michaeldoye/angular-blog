@@ -8,9 +8,10 @@ import { MaterialModule } from '../material.module';
 import { AdminComponent } from './admin/admin.component';
 import { ScrollbarModule } from './scrollbar/scrollbar.module';
 import { SharedModule } from '../shared/shared.module';
+import { FrontendComponent } from './frontend/frontend.component';
 
 @NgModule({
-  declarations: [AdminComponent],
+  declarations: [AdminComponent, FrontendComponent],
   imports: [
     CommonModule,
     MaterialModule,

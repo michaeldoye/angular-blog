@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { routeAnimation } from '../../../route.animation';
+import { PostsService } from '../../../shared/services/posts.service';
+import { Subscription } from 'rxjs/Subscription';
+import { Post } from '../../admin/posts/posts.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
@@ -10,11 +14,36 @@ import { routeAnimation } from '../../../route.animation';
   },
   animations: [ routeAnimation ]
 })
-export class HomePageComponent implements OnInit {
 
-  constructor() { }
+export class HomePageComponent implements OnInit, OnDestroy {
+
+  subs: Array<Subscription> = [];
+  direction: string = 'row';
+
+  posts: Array<Post> = [];
+  isLoading: boolean = true;
+
+  constructor(private postsService: PostsService, private rt: Router) { }
 
   ngOnInit() {
+    this.subs.push(
+      this.postsService.getPosts().subscribe(data => {
+        this.posts = data;
+        this.isLoading = false;
+      })
+    );
+  }
+
+  toggleDirection() {
+    this.direction = (this.direction === 'column') ? 'row' : 'column';
+  }
+
+  goToPost(post: Post): void {
+    this.rt.navigate(['post', post.id, post.title.replace(/\s+/g, '-').toLowerCase()]);
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach((sub: Subscription) => sub.unsubscribe());
   }
 
 }

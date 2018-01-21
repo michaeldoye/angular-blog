@@ -6,6 +6,7 @@ import { routeAnimation } from '../../../route.animation';
 import { LocalStorageService } from 'angular-2-local-storage/dist/local-storage.service';
 import { Router } from '@angular/router';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { SafeHtml } from '@angular/platform-browser/src/security/dom_sanitization_service';
 
 
 @Component({
@@ -178,7 +179,7 @@ export class PostsComponent {
 export interface Post {
   id: any;
   title: string;
-  content: string;
+  content: string | SafeHtml;
   dateAdded: Date;
   author: string;
   categories?: Array<string>;

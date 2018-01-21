@@ -1,5 +1,32 @@
-<p>
-  home-page works!
-</p>
-<a [routerLink]="['/admin']">admin</a>
-<a [routerLink]="['/login']">login</a>
+<div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="20px" fxLayoutWrap>
+  <section class="post" *ngFor="let post of posts" fxFlex="48">
+
+    <mat-card class="example-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title><h4>{{ post.title }}</h4></mat-card-title>
+        <mat-card-subtitle>
+          <mat-chip-list>
+            <mat-chip *ngFor="let category of post.categories">{{ category }}</mat-chip>
+          </mat-chip-list>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+      <mat-card-content>
+        <p>
+          {{ post.content | slice:0:200 }}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="goToPost(post)">LIKE</button>
+        <button mat-button>SHARE</button>
+      </mat-card-actions>
+    </mat-card>      
+  
+  </section>
+</div>
+
+
+<div class="loading-spinner" *ngIf="isLoading" fxLayout="row" fxLayoutAlign="center center">
+  <mat-spinner [diameter]="40"></mat-spinner>
+</div>

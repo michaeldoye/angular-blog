@@ -9,11 +9,23 @@ import { PostsComponent } from './client/admin/posts/posts.component';
 import { AdminAuthGuard } from './client/utils/admin-auth.gaurd';
 import { AddPostComponent } from './client/admin/posts/add-post/add-post.component';
 import { EditPostComponent } from './client/admin/posts/edit-post/edit-post.component';
+import { SinglePostComponent } from './client/pages/single-post/single-post.component';
+import { FrontendComponent } from './core/frontend/frontend.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomePageComponent
+    component: FrontendComponent,
+    children: [
+      {
+        path: '',
+        component: HomePageComponent
+      },
+      {
+        path: 'post/:id/:title',
+        component: SinglePostComponent
+      },
+    ]
   },
   {
     path: 'login',
@@ -41,7 +53,7 @@ const routes: Routes = [
         path: 'posts/new',
         component: AddPostComponent,
         pathMatch: 'full'
-      },      
+      }   
     ]
   }
 ];
