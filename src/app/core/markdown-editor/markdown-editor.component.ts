@@ -27,7 +27,8 @@ declare let hljs: any;
 
 export class MarkdownEditorComponent implements ControlValueAccessor, Validator {
 
-  @Output('onSave') onSave = new EventEmitter();
+  @Output('onSave') 
+  onSave = new EventEmitter<boolean>();
 
   @ViewChild('aceEditor')
   aceEditorContainer: ElementRef;

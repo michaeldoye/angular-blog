@@ -46,8 +46,8 @@
 
     <!-- title Column -->
     <ng-container matColumnDef="title">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Title </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ row.title }} </mat-cell>
+      <mat-header-cell fxFlex="35%" *matHeaderCellDef mat-sort-header> Title </mat-header-cell>
+      <mat-cell fxFlex="35%" *matCellDef="let row"> {{ row.title }} </mat-cell>
     </ng-container>
 
     <!-- author Column -->
@@ -71,8 +71,8 @@
     <ng-container matColumnDef="action">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Actions </mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <button mat-icon-button matTooltip="View Post" (click)="editPost(row.id)">
-          <mat-icon aria-label="delete">arrow_forward</mat-icon>
+        <button mat-icon-button matTooltip="Edit Post" (click)="editPost(row.id)">
+          <mat-icon color="primary" aria-label="delete">edit</mat-icon>
         </button>
       </mat-cell>
     </ng-container> 

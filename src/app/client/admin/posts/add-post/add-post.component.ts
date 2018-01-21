@@ -43,7 +43,7 @@ export class AddPostComponent implements OnInit {
     this.postForm = fb.group({
       'id': this.postsCount,
       'title': ['', [Validators.required, Validators.minLength(5)]],
-      'content': ['<h3>I am Example content</h3>', Validators.minLength(10)],
+      'content': ['### I am example markdown', Validators.minLength(10)],
       'author': this.user.displayName,
       'dateAdded': this.postDate,
       'categories': ['', Validators.required],
@@ -67,7 +67,8 @@ export class AddPostComponent implements OnInit {
       }
       this.isLoading = false;
     },
-    (error) => {
+    (error: Error) => {
+      this.sb.open(error.message, '', {duration: 5000});
       this.isLoading = false;
     });    
   }

@@ -20,6 +20,8 @@
           <mat-error *ngIf="title.invalid">min 5 characters</mat-error>
         </mat-form-field>
 
+        <p><mat-divider></mat-divider></p>
+
         <md-editor name="Content" formControlName="content" required maxlength="12500" (onSave)="fullScreenSave(postForm.value)"></md-editor>
         <mat-error *ngIf="content.invalid">max 1500</mat-error>      
     
@@ -32,6 +34,8 @@
       <mat-card fxFlex="25" fxLayout="column" fxLayoutAlign="space-evenly stretch">
 
         <button mat-raised-button [disabled]="postForm.invalid" (click)="addNewPost(postForm.value)" type="submit" color="primary">Add Post</button>
+
+        <p><mat-divider></mat-divider></p>
       
         <mat-form-field class="aside-field">
           <mat-select placeholder="Categories" formControlName="categories" multiple>
@@ -39,6 +43,8 @@
           </mat-select>
           <mat-error *ngIf="categories.invalid">This field is required</mat-error>
         </mat-form-field>
+
+        <p><mat-divider></mat-divider></p>
   
         <mat-form-field class="aside-field">
           <mat-select placeholder="Tags" formControlName="tags" multiple>
@@ -46,6 +52,8 @@
           </mat-select>
           <mat-error *ngIf="tags.invalid">This field is required</mat-error>
         </mat-form-field>
+
+        <p><mat-divider></mat-divider></p>
   
         <mat-form-field class="aside-field">
           <mat-select [value]="status.value" placeholder="Status" formControlName="status">
