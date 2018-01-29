@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { Post } from '../posts.component';
 import { MatDialog } from '@angular/material';
 import { AddCategoryComponent } from '../add-category/add-category.component';
+import { PostsService } from '../../../../shared/services/posts.service';
 
 @Component({
   selector: 'app-add-post',
@@ -38,6 +39,7 @@ export class AddPostComponent implements OnInit {
     private db: AngularFireDatabase,
     private ls: LocalStorageService,
     private sb: MatSnackBar,
+    private postService: PostsService,
     private dialog: MatDialog,
     private router: Router) {
     
@@ -51,7 +53,8 @@ export class AddPostComponent implements OnInit {
       'dateAdded': this.postDate,
       'categories': ['', Validators.required],
       'tags': ['', Validators.required],
-      'status': ['draft', Validators.required]
+      'status': ['draft', Validators.required],
+      'fileUrl': ''
     });
   }
 
@@ -85,12 +88,21 @@ export class AddPostComponent implements OnInit {
       this.isLoading = false;
       this.sb.open('Your post has been added!', '', {duration: 5000});
       this.router.navigate([`admin/posts/edit/${result.id}`])
+      this.postService.updateFrontendPosts(this.allPosts);
     })
     .catch(error => {
       this.sb.open(error.message, '', {duration: 5000});
       this.isLoading = false;
     });
-       
+  }
+
+  doUpload(file: File) {
+    this.isLoading = true;
+    this.postService.uploadImage(file).then(data => {
+      this.postForm.patchValue({fileUrl: data});
+      this.sb.open('Image uploaded', 'OK', {duration: 3500});
+      this.isLoading = false;
+    });
   }
 
   fullScreenSave(post: Post): void {
@@ -112,6 +124,7 @@ export class AddPostComponent implements OnInit {
   get categories() { return this.postForm.get('categories') };
   get tags() { return this.postForm.get('tags') };
   get status() { return this.postForm.get('status') };
-  get content() { return this.postForm.get('content') }; 
+  get content() { return this.postForm.get('content') };
+  get fileUrl() { return this.postForm.get('fileUrl') };   
 
 }

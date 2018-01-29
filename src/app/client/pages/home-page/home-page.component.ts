@@ -28,7 +28,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subs.push(
       this.postsService.getPosts().subscribe(data => {
-        this.posts = data;
+        this.posts = data.filter((post: Post) => post.status === 'published').reverse();
         this.isLoading = false;
       })
     );

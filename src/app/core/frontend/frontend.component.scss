@@ -1,13 +1,22 @@
 :host {
   
   .content-container {
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
-    padding-top: 50px;
+    padding-top: 110px;
     padding-bottom: 50px;
+    width: 100%;
   }
 
   .page-container {
     background: #eaeaea;
   }
+
+  .main-toolbar {
+    position: fixed;
+    /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+    z-index: 2;
+    box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
+  }
+
 }

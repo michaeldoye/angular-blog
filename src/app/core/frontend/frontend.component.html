@@ -1,6 +1,12 @@
-
 <div class="page-container">
-  <mat-toolbar>My App</mat-toolbar>
+  <mat-toolbar class="main-toolbar">
+    Michael Doye
+    <span fxFlex></span>
+    <button mat-button routerLink="/">Home</button>
+    <button mat-button>Basic</button>
+    <button mat-button>Basic</button>
+    <button routerLink="/admin" mat-button>admin</button>
+  </mat-toolbar>
 
   <div class="content-container">
     <router-outlet></router-outlet>

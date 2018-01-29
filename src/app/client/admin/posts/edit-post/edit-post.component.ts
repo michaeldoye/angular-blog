@@ -8,6 +8,7 @@ import { MatSnackBar, MatDialog } from '@angular/material';
 import { AddCategoryComponent } from '../add-category/add-category.component';
 import { Subscription } from 'rxjs/Subscription';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { PostsService } from '../../../../shared/services/posts.service';
 
 @Component({
   selector: 'app-edit-post',
@@ -36,6 +37,7 @@ export class EditPostComponent implements OnDestroy {
     private ls: LocalStorageService,
     private fb: FormBuilder,
     private dialog: MatDialog,
+    private postService: PostsService,
     private sb: MatSnackBar,
     private rt: Router) { 
 
@@ -52,7 +54,8 @@ export class EditPostComponent implements OnDestroy {
       'dateAdded': '',
       'categories': ['', Validators.required],
       'tags': ['', Validators.required],
-      'status': ['', Validators.required]
+      'status': ['', Validators.required],
+      'fileUrl': ''
     });
   }
 
@@ -103,6 +106,7 @@ export class EditPostComponent implements OnDestroy {
         'categories': post.categories,
         'tags': post.tags,
         'status': post.status,
+        'fileUrl': post.fileUrl ? post.fileUrl : ''
       });
     } else {
       if (post) {
@@ -136,6 +140,7 @@ export class EditPostComponent implements OnDestroy {
     // Update the posts node with the updated posts array
     this.postsRef.update(posts).then(() => {
       this.sb.open('Your post has been saved!', '', {duration: 5000});
+      this.postService.updateFrontendPosts(this.allPosts);
     })
     .catch((e: Error) => {
       this.sb.open(e.message, '', {duration: 5000});
@@ -169,7 +174,8 @@ export class EditPostComponent implements OnDestroy {
         // Update the posts node with the updated posts array
         this.postsRef.update(posts).then(() => {
           this.rt.navigate(['admin/posts']);
-          this.openSnackBox('Post Deleted', 'undo')      
+          this.openSnackBox('Post Deleted', 'undo');
+          this.postService.updateFrontendPosts(this.allPosts);     
         })
         .catch((e: Error) => {
           this.sb.open(e.message, '', {duration: 5000});
@@ -198,6 +204,15 @@ export class EditPostComponent implements OnDestroy {
     });
   }
 
+  doUpload(file: File) {
+    this.isLoading = true;
+    this.postService.uploadImage(file).then(data => {
+      this.postForm.patchValue({fileUrl: data});
+      this.sb.open('Image uploaded', 'OK', {duration: 3500});
+      this.isLoading = false;
+    });
+  }  
+
   ngOnDestroy() {
     this.subs.forEach((sub: Subscription) => sub.unsubscribe());
   }
@@ -211,6 +226,7 @@ export class EditPostComponent implements OnDestroy {
   // Form field reference: status
   get status() { return this.postForm.get('status') };
   // Form field reference: content
-  get content() { return this.postForm.get('content') }; 
+  get content() { return this.postForm.get('content') };
+  get fileUrl() { return this.postForm.get('fileUrl') }; 
 
 }

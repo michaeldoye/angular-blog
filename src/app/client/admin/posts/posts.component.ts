@@ -7,6 +7,7 @@ import { LocalStorageService } from 'angular-2-local-storage/dist/local-storage.
 import { Router } from '@angular/router';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { SafeHtml } from '@angular/platform-browser/src/security/dom_sanitization_service';
+import { PostsService } from '../../../shared/services/posts.service';
 
 
 @Component({
@@ -42,6 +43,7 @@ export class PostsComponent {
     private db: AngularFireDatabase,
     private ls: LocalStorageService,
     private sb: MatSnackBar,
+    private postService: PostsService,
     public  dl: MatDialog,
     private rt: Router) {
       
@@ -154,7 +156,8 @@ export class PostsComponent {
         // Update the posts node with the updated posts array
         this.postsRef.update(posts).then(() => {
           this.openSnackBox('Posts Deleted', 'undo');
-          this.selectedPosts = [];     
+          this.selectedPosts = []; 
+          this.postService.updateFrontendPosts(this.allPosts);    
         })
         .catch((e: Error) => {
           this.sb.open(e.message, '', {duration: 5000});
@@ -186,5 +189,5 @@ export interface Post {
   status: string;
   tags?: Array<string>;
   isChecked?: boolean;
-  slug?: string;
+  fileUrl?: string;
 }

@@ -63,7 +63,17 @@
             <mat-option value="draft">Draft</mat-option>
           </mat-select>
           <mat-error *ngIf="status.invalid">This field is required</mat-error>
-        </mat-form-field>   
+        </mat-form-field>
+
+        <p><mat-divider></mat-divider></p>
+
+        <mat-form-field>
+          <input matInput type="text" placeholder="Featured Image" formControlName="fileUrl">
+          <mat-error *ngIf="fileUrl.invalid">min 5 characters</mat-error>
+        </mat-form-field>        
+        <input type="file" #file placeholder="Image" (change)="doUpload(file.files)"> 
+        
+        <img *ngIf="fileUrl" [src]="fileUrl.value" />
 
       </mat-card>
 

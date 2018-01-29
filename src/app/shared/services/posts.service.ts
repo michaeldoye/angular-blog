@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
+import { FirebaseApp } from 'angularfire2';
+import 'firebase/storage';
 import { LocalStorageService } from 'angular-2-local-storage/dist/local-storage.service';
 import { Observable } from 'rxjs/Observable';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SafeHtml } from '@angular/platform-browser/src/security/dom_sanitization_service';
+import { Post } from '../../client/admin/posts/posts.component';
 
 declare let marked: any;
 declare let hljs: any;
@@ -15,25 +18,33 @@ export class PostsService {
   user: any = this.ls.get('user');
 
   previewHtml: any;
+  firebaseApp: FirebaseApp;
 
   constructor(
+    firebaseApp: FirebaseApp,
     private db: AngularFireDatabase,
     private ls: LocalStorageService,
     private _domSanitizer: DomSanitizer) { 
 
-    this.postsRef = db.object(`users/${this.user.uid}`);
+    this.firebaseApp = firebaseApp;
+
+    this.postsRef = db.object('posts');
   }
 
   getPosts(): Observable<any> {
-    return this.postsRef.valueChanges().map((data: any) => data.posts);
+    return this.postsRef.valueChanges().map((data: any) => data);
   }
 
-  getCategories(): Observable<any> {
-    return this.postsRef.valueChanges().map((data: any) => data.categories)
+  updateFrontendPosts(posts: Array<Post>): Observable<any> {
+    return Observable.of(this.postsRef.set(posts));
   }
 
-  getTags(): Observable<any> {
-    return this.postsRef.valueChanges().map((data: any) => data.tags)
+  uploadImage(files: File): Promise<any> {
+    let storageRef = this.firebaseApp.storage().ref().child(files[0].name);
+    return storageRef.put(files[0]).then(snapshot => {
+      return snapshot.downloadURL;       
+    })
+    .catch((e: Error) => {return e.message})    
   }
 
   renderContent(_content: any): SafeHtml {
