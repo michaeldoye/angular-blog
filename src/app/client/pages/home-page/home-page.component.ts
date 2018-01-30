@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { routeAnimation } from '../../../route.animation';
+import { routeAnimation, slideAnimation } from '../../../route.animation';
 import { PostsService } from '../../../shared/services/posts.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Post } from '../../admin/posts/posts.component';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   host: {
     '[@routeAnimation]': 'true'
   },
-  animations: [ routeAnimation ]
+  animations: [ routeAnimation, slideAnimation ]
 })
 
 export class HomePageComponent implements OnInit, OnDestroy {
@@ -29,7 +29,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     this.subs.push(
       this.postsService.getPosts().subscribe(data => {
         this.posts = data.filter((post: Post) => post.status === 'published').reverse();
-        this.isLoading = false;
+        setTimeout(this.isLoading = false, 150);
       })
     );
   }

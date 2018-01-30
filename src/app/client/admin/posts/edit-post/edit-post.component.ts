@@ -9,11 +9,16 @@ import { AddCategoryComponent } from '../add-category/add-category.component';
 import { Subscription } from 'rxjs/Subscription';
 import { ConfirmDialogComponent } from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { PostsService } from '../../../../shared/services/posts.service';
+import { routeAnimation } from '../../../../route.animation';
 
 @Component({
   selector: 'app-edit-post',
   templateUrl: './edit-post.component.html',
-  styleUrls: ['./edit-post.component.scss']
+  styleUrls: ['./edit-post.component.scss'],
+  host: {
+    '[@routeAnimation]': 'true'
+  },
+  animations: [ routeAnimation ]
 })
 
 export class EditPostComponent implements OnDestroy {
@@ -227,6 +232,7 @@ export class EditPostComponent implements OnDestroy {
   get status() { return this.postForm.get('status') };
   // Form field reference: content
   get content() { return this.postForm.get('content') };
+  // Form field reference: fileUrl
   get fileUrl() { return this.postForm.get('fileUrl') }; 
 
 }

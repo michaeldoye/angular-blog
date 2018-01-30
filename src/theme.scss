@@ -2,7 +2,7 @@
 
 @include mat-core();
 
-$light-default-primary: mat-palette($mat-indigo);
+$light-default-primary: mat-palette($mat-blue);
 $light-default-accent:  mat-palette($mat-blue-grey, A200, A100, A400);
 $light-default-warn:    mat-palette($mat-red);
 $light-default-theme:   mat-light-theme($light-default-primary, $light-default-accent, $light-default-warn);

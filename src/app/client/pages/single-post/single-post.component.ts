@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PostsService } from '../../../shared/services/posts.service';
 import { Post } from '../../admin/posts/posts.component';
 import { routeAnimation } from '../../../route.animation';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-single-post',
@@ -13,10 +14,12 @@ import { routeAnimation } from '../../../route.animation';
   },
   animations: [ routeAnimation ]
 })
-export class SinglePostComponent implements OnInit {
+export class SinglePostComponent implements OnInit, OnDestroy {
 
   post: Post
   isLoading: boolean = true;
+
+  subs: Array<Subscription> = [];
 
   constructor(
     private ar: ActivatedRoute, 
@@ -25,11 +28,18 @@ export class SinglePostComponent implements OnInit {
 
   ngOnInit() {
     let id = this.ar.snapshot.paramMap.get('id');
-    this.postService.getPosts().subscribe(data => {
-      this.post = data.filter((post: Post) => post.id == id)[0];
-      this.isLoading = false;
-      this.post.content = this.postService.renderContent(this.post.content);
-    })
+    this.subs.push(
+      this.postService.getPosts().subscribe(data => {
+        this.post = data.filter((post: Post) => post.id == id)[0];
+        this.post.content = this.postService.renderContent(this.post.content);
+        setTimeout(this.isLoading = false, 150);
+      })
+    )
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach((sub: Subscription) => sub.unsubscribe());
+    
   }
 
 }

@@ -14,7 +14,8 @@ import { SinglePostComponent } from './single-post/single-post.component';
 @NgModule({
   declarations: [
     LoginPageComponent, 
-    HomePageComponent, SinglePostComponent
+    HomePageComponent, 
+    SinglePostComponent
   ],
   imports: [
     CommonModule,
